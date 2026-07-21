@@ -1,0 +1,30 @@
+/* ===== Landing Page ===== */
+.landing {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+    position: relative;
+    overflow: hidden;
+}
+
+.landing::before {
+    content: "";
+    position: absolute;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background:
+        radial-gradient(
+            circle at 30% 40%,
+            rgba(139, 92, 246, 0.06) 0%,
+            transparent 50%
+        ),
+        radial-gradient(
+            circle at 70% 60%,
+            rgba(236, 72, 153, 0.04) 0%,
+            transparent 50%
+        );
+}

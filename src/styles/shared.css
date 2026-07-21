@@ -1,0 +1,103 @@
+/* ===== Shared Button Styles ===== */
+.btn-spotify {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 36px;
+    border-radius: 28px;
+    font-size: 16px;
+    font-weight: 700;
+    background: #1db954;
+    color: #000;
+    border: none;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 20px rgba(29, 185, 84, 0.3);
+}
+
+.btn-spotify svg {
+    width: 20px;
+    height: 20px;
+}
+
+.btn-spotify:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 6px 28px rgba(29, 185, 84, 0.45);
+    background: #1ed760;
+}
+
+.btn-spotify:active {
+    transform: translateY(0) scale(0.98);
+}
+
+.btn-login {
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 20px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, var(--purple), var(--pink));
+    color: white;
+    border: none;
+    transition: all 0.25s ease;
+    box-shadow: 0 2px 12px rgba(139, 92, 246, 0.25);
+}
+
+.btn-login:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
+}
+
+.btn-login:active {
+    transform: translateY(0);
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--purple), var(--pink));
+    color: white;
+    border: none;
+    transition: all 0.25s ease;
+}
+
+.btn-submit:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.35);
+}
+
+.btn-submit:active {
+    transform: translateY(0);
+}
+
+.spotify-logo {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+/* ===== Page transitions ===== */
+.page-enter {
+    animation: fadeInUp 0.4s ease forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== Shared Responsive ===== */
+@media (max-width: 768px) {
+    .btn-spotify {
+        padding: 12px 28px;
+        font-size: 15px;
+    }
+}
