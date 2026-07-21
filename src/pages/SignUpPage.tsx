@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaSpotify } from "react-icons/fa";
 import BobaDecorations from "../components/BobaDecorations";
-import "./SignUpPage.css";
+import { ApiError, signUp, setToken } from "../lib/api";
+import "./AuthPage.css";
 
 export default function SignUpPage() {
+    const navigate = useNavigate();
     const [form, setForm] = useState({
         username: "",
         email: "",
@@ -31,14 +33,15 @@ export default function SignUpPage() {
         }
 
         try {
-            // TODO: POST to /api/auth/signup
-            console.log("Sign up payload:", {
+            const { token } = await signUp({
                 username: form.username,
                 email: form.email,
                 password: form.password,
             });
+            setToken(token);
+            navigate("/results");
         } catch (err) {
-            setError(err instanceof Error ? err.message : "Sign up failed");
+            setError(err instanceof ApiError ? err.message : "Sign up failed");
         } finally {
             setLoading(false);
         }
@@ -139,7 +142,8 @@ export default function SignUpPage() {
                     </button>
 
                     <div className="auth-footer">
-                        Already have an account? <Link to="/login">Log in</Link>
+                        Already have an account?{" "}
+                        <Link to="/login">Log in</Link>
                     </div>
                 </div>
             </section>

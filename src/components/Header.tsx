@@ -88,8 +88,8 @@ export default function Header() {
 
             <nav className="header-nav">
                 <Link to="/">Home</Link>
-                <Link to="/signin" className="btn-login">
-                    Sign In
+                <Link to="/login" className="btn-login">
+                    Log In
                 </Link>
             </nav>
         </header>

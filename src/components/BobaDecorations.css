@@ -1,4 +1,132 @@
 .boba-decorations {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.boba-bubble {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.15;
+    animation: floatBubble var(--duration, 8s) ease-in-out infinite;
+    animation-delay: var(--delay, 0s);
+}
+
+.boba-bubble-1 {
+    width: 40px;
+    height: 40px;
+    background: var(--purple);
+    top: 20%;
+    left: 10%;
+    --duration: 10s;
+    --delay: 0s;
+}
+
+.boba-bubble-2 {
+    width: 24px;
+    height: 24px;
+    background: var(--pink);
+    top: 60%;
+    left: 85%;
+    --duration: 12s;
+    --delay: 1s;
+}
+
+.boba-bubble-3 {
+    width: 32px;
+    height: 32px;
+    background: var(--amber);
+    top: 75%;
+    left: 20%;
+    --duration: 9s;
+    --delay: 2s;
+}
+
+.boba-bubble-4 {
+    width: 18px;
+    height: 18px;
+    background: var(--purple-soft);
+    top: 30%;
+    left: 75%;
+    --duration: 11s;
+    --delay: 0.5s;
+}
+
+.boba-bubble-5 {
+    width: 28px;
+    height: 28px;
+    background: var(--pink);
+    top: 80%;
+    left: 65%;
+    --duration: 13s;
+    --delay: 1.5s;
+}
+
+.boba-bubble-6 {
+    width: 20px;
+    height: 20px;
+    background: var(--amber-soft);
+    top: 15%;
+    left: 50%;
+    --duration: 8s;
+    --delay: 3s;
+}
+
+.boba-tapioca {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #5a3e1a, #2c1a08);
+    opacity: 0.12;
+}
+
+.boba-tapioca-1 {
+    width: 16px;
+    height: 16px;
+    bottom: 28%;
+    left: 30%;
+    animation: sinkPearl 15s ease-in-out infinite;
+}
+
+.boba-tapioca-2 {
+    width: 12px;
+    height: 12px;
+    bottom: 35%;
+    left: 55%;
+    animation: sinkPearl 18s ease-in-out infinite 2s;
+}
+
+.boba-tapioca-3 {
+    width: 14px;
+    height: 14px;
+    bottom: 25%;
+    left: 72%;
+    animation: sinkPearl 16s ease-in-out infinite 4s;
+}
+
+@keyframes floatBubble {
+    0%,
+    100% {
+        transform: translateY(0) scale(1);
+    }
+    25% {
+        transform: translateY(-20px) scale(1.05);
+    }
+    50% {
+        transform: translateY(-10px) scale(0.95);
+    }
+    75% {
+        transform: translateY(-25px) scale(1.02);
+    }
+}
+
+@keyframes sinkPearl {
+    0%,
+    100% {
+        transform: translateY(0) scale(1);
+    }
+    50% {
+        transform: translateY(15px) scale(1.1);
+    }
+}

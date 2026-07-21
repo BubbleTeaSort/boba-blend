@@ -6,6 +6,7 @@
     justify-content: center;
     padding: 40px 24px;
     position: relative;
+    z-index: 1;
 }
 
 .auth-card {
@@ -100,27 +101,6 @@
     color: var(--text-muted);
     letter-spacing: 0.5px;
     text-transform: uppercase;
-}
-
-.btn-submit {
-    width: 100%;
-    padding: 12px;
-    border-radius: 12px;
-    font-size: 15px;
-    font-weight: 700;
-    background: linear-gradient(135deg, var(--purple), var(--pink));
-    color: white;
-    border: none;
-    transition: all 0.25s ease;
-}
-
-.btn-submit:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.35);
-}
-
-.btn-submit:active {
-    transform: translateY(0);
 }
 
 .btn-submit:disabled {
