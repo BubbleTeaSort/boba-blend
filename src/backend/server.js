@@ -1,14 +1,20 @@
 const express = require('express');
 const path = require("path");
+const swaggerUi = require("swagger-ui-express");
 
 const Env = require('./config/env');
-const { initDatabase } = require('./db/postgresPool');
+const swaggerDocs = require("./docs/swagger");
+const { initDatabase } = require('./db/postgres_pool');
 
 const app = express();
 app.use(express.json());
 app.set('trust proxy', 1);
 
+const routes = require("./routes");
+app.use("/api", routes);
+app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use(express.static(path.join(__dirname, "../../public")));
+app.get("/openapi.json", (req, res) => {res.json(swaggerDocs);});
 
 const server = http.createServer(app);
 
@@ -20,23 +26,5 @@ const server = http.createServer(app);
         process.exit(1);
     }
 })();
-
-/**
- * @openapi
- * /health:
- *   get:
- *     summary: Service health check
- *     responses:
- *       '200':
- *         description: Service is healthy
- *         content:
- *           text/html:
- *             schema:
- *               type: string
- *               example: OK
- */
-app.get('/health', (_, res) => {
-    res.status(200).send('OK');
-});
 
 server.listen(Env.PORT, '0.0.0.0', () => {});
