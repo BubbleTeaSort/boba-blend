@@ -2,8 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaSpotify } from "react-icons/fa";
 import BobaDecorations from "../components/BobaDecorations";
-import { ApiError, signUp, setToken } from "../lib/api";
-import "./AuthPage.css";
+import "../styles/AuthPage.css";
 
 export default function SignUpPage() {
     const navigate = useNavigate();
@@ -30,20 +29,6 @@ export default function SignUpPage() {
             setError("Passwords do not match");
             setLoading(false);
             return;
-        }
-
-        try {
-            const { token } = await signUp({
-                username: form.username,
-                email: form.email,
-                password: form.password,
-            });
-            setToken(token);
-            navigate("/results");
-        } catch (err) {
-            setError(err instanceof ApiError ? err.message : "Sign up failed");
-        } finally {
-            setLoading(false);
         }
     };
 
