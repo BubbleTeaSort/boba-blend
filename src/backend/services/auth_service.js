@@ -70,7 +70,7 @@ async function signup({
             $1,
             $2,
             $3,
-            'pending_verification'
+            'active'
         )
         RETURNING
             id,
@@ -166,7 +166,7 @@ async function login({
     // Check account status
     //
 
-    if (user.status !== "active" && user.status !== "pending_verification") {
+    if (user.status !== "active") {
         const err = new Error("Account is unavailable.");
         err.status = 403;
         throw err;

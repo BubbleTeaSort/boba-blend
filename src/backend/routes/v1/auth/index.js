@@ -11,7 +11,7 @@ const router = express.Router();
  *     tags:
  *       - Authentication
  *     summary: Create a new user account
- *     description: Registers a new user account with a pending verification status.
+ *     description: Registers a new user account with an active status.
  *     requestBody:
  *       required: true
  *       content:

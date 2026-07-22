@@ -59,7 +59,6 @@ const swaggerOptions = {
                         status: {
                             type: "string",
                             enum: [
-                                "pending_verification",
                                 "active",
                                 "suspended",
                                 "banned",

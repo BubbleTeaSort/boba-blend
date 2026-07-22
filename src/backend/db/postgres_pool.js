@@ -21,7 +21,6 @@ async function initDatabase() {
                 WHERE typname = 'user_status'
             ) THEN
                 CREATE TYPE user_status AS ENUM (
-                    'pending_verification',
                     'active',
                     'suspended',
                     'banned',
@@ -54,7 +53,7 @@ async function initDatabase() {
             display_name VARCHAR(32),
             avatar_url TEXT,
             
-            status user_status NOT NULL DEFAULT 'pending_verification',
+            status user_status NOT NULL DEFAULT 'active',
             is_email_verified BOOLEAN NOT NULL DEFAULT FALSE,
             
             email_verification_token_hash VARCHAR(255),
