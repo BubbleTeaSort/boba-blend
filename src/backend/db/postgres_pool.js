@@ -21,7 +21,6 @@ async function initDatabase() {
                 WHERE typname = 'user_status'
             ) THEN
                 CREATE TYPE user_status AS ENUM (
-                    'pending_verification',
                     'active',
                     'suspended',
                     'banned',
@@ -54,7 +53,7 @@ async function initDatabase() {
             display_name VARCHAR(32),
             avatar_url TEXT,
             
-            status user_status NOT NULL DEFAULT 'pending_verification',
+            status user_status NOT NULL DEFAULT 'active',
             is_email_verified BOOLEAN NOT NULL DEFAULT FALSE,
             
             email_verification_token_hash VARCHAR(255),
@@ -95,6 +94,29 @@ async function initDatabase() {
     `);
 
     await pool.query(`
+        CREATE TABLE IF NOT EXISTS access_tokens (
+            id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+
+            user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+
+            token_id VARCHAR(32) NOT NULL UNIQUE,
+            token_hash VARCHAR(255) NOT NULL,
+
+            name VARCHAR(100) NOT NULL,
+            description TEXT,
+
+            scopes JSONB NOT NULL,
+
+            expires_at TIMESTAMP WITH TIME ZONE,
+            last_used_at TIMESTAMP WITH TIME ZONE,
+
+            created_ip INET,
+            created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            revoked_at TIMESTAMP WITH TIME ZONE
+        );
+    `);
+
+    await pool.query(`
         CREATE TABLE IF NOT EXISTS oauth_connections (
             user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
 
@@ -128,6 +150,11 @@ async function initDatabase() {
 
         CREATE INDEX IF NOT EXISTS idx_sessions_user_id ON sessions(user_id);
         CREATE INDEX IF NOT EXISTS idx_sessions_expires_at ON sessions(expires_at);
+
+        CREATE UNIQUE INDEX IF NOT EXISTS idx_access_tokens_token_id ON access_tokens(token_id);
+        CREATE INDEX IF NOT EXISTS idx_access_tokens_user_id ON access_tokens(user_id);
+        CREATE INDEX IF NOT EXISTS idx_access_tokens_expires ON access_tokens(expires_at) WHERE expires_at IS NOT NULL;
+        CREATE INDEX IF NOT EXISTS idx_access_tokens_active ON access_tokens(user_id) WHERE revoked_at IS NULL;
 
         CREATE INDEX IF NOT EXISTS idx_oauth_connections_user_id ON oauth_connections(user_id);
         CREATE INDEX IF NOT EXISTS idx_oauth_connections_expiring ON oauth_connections(expires_at) WHERE expires_at IS NOT NULL;

@@ -2,13 +2,9 @@
   "name": "bobablend",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "oxlint",
-    "preview": "vite preview"
-  },
+    "scripts": {
+        "start": "node src/backend/server.js"
+    },
   "dependencies": {
     "argon2": "^0.45.1",
     "axios": "^1.18.1",
