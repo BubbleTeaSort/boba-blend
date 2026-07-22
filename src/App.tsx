@@ -1,10 +1,10 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import LandingPage from "./pages/LandingPage";
-import LoginPage from "./pages/LoginPage";
-import SignUpPage from "./pages/SignUpPage";
-import ResultsPage from "./pages/ResultsPage";
+import Header from "./frontend/components/Header";
+import Footer from "./frontend/components/Footer";
+import LandingPage from "./frontend/pages/LandingPage";
+import LoginPage from "./frontend/pages/LoginPage";
+import SignUpPage from "./frontend/pages/SignUpPage";
+import ResultsPage from "./frontend/pages/ResultsPage";
 
 function App() {
     return (

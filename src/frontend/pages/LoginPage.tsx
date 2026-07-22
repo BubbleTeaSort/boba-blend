@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaSpotify } from "react-icons/fa";
 import BobaDecorations from "../components/BobaDecorations";
-import { ApiError, logIn, setToken } from "../lib/api";
 import "./AuthPage.css";
 
 export default function LoginPage() {
@@ -23,18 +22,6 @@ export default function LoginPage() {
         e.preventDefault();
         setLoading(true);
         setError("");
-
-        try {
-            const { token } = await logIn(form);
-            setToken(token);
-            navigate("/results");
-        } catch (err) {
-            setError(
-                err instanceof ApiError ? err.message : "Log in failed",
-            );
-        } finally {
-            setLoading(false);
-        }
     };
 
     const handleSpotifyConnect = () => {

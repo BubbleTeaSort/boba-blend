@@ -142,8 +142,7 @@ export default function SignUpPage() {
                     </button>
 
                     <div className="auth-footer">
-                        Already have an account?{" "}
-                        <Link to="/login">Log in</Link>
+                        Already have an account? <Link to="/login">Log in</Link>
                     </div>
                 </div>
             </section>
