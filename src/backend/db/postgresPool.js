@@ -28,6 +28,16 @@ async function initDatabase() {
                     'deactivated'
                 );
             END IF;
+
+            IF NOT EXISTS (
+                SELECT 1
+                FROM pg_type
+                WHERE typname = 'oauth_provider'
+            ) THEN
+                CREATE TYPE oauth_provider AS ENUM (
+                    'spotify'
+                );
+            END IF;
         END
         $$;
     `);
@@ -66,10 +76,39 @@ async function initDatabase() {
     `);
 
     await pool.query(`
+        CREATE TABLE IF NOT EXISTS oauth_connections (
+            user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+
+            provider oauth_provider NOT NULL,
+            provider_user_id TEXT NOT NULL,
+
+            access_token TEXT,
+            refresh_token TEXT,
+            expires_at TIMESTAMP WITH TIME ZONE,
+            scopes TEXT[],
+
+            -- Cached
+            external_handle TEXT,
+            external_display_name TEXT,
+            external_avatar_url TEXT,
+            profile_synced_at TIMESTAMP WITH TIME ZONE,
+
+            connected_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+            UNIQUE (provider, provider_user_id),
+            UNIQUE (user_id, provider)
+        );
+    `);
+
+    await pool.query(`
         CREATE UNIQUE INDEX IF NOT EXISTS idx_users_handle ON users(handle) WHERE handle IS NOT NULL;
         CREATE INDEX IF NOT EXISTS idx_users_status ON users(status) WHERE status != 'active';
         CREATE INDEX IF NOT EXISTS idx_users_email_token ON users(email_verification_token_hash) WHERE email_verification_token_hash IS NOT NULL;
         CREATE INDEX IF NOT EXISTS idx_users_reset_token ON users(password_reset_token_hash) WHERE password_reset_token_hash IS NOT NULL;
+
+        CREATE INDEX idx_oauth_connections_user_id ON oauth_connections(user_id);
+        CREATE INDEX idx_oauth_connections_expiring ON oauth_connections(expires_at) WHERE expires_at IS NOT NULL;
     `);
 }
 
