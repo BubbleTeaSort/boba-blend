@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { FaSpotify } from "react-icons/fa";
 import BobaDecorations from "../components/BobaDecorations";
-import "./LandingPage.css";
+import "../styles/LandingPage.css";
 
 export default function LandingPage() {
     return (

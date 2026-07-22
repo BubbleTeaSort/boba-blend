@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import "./ResultsPage.css";
+import "../styles/ResultsPage.css";
 
 export default function ResultsPage() {
     return (
