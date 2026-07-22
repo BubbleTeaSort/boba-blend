@@ -1,10 +1,8 @@
 const express = require('express');
 const http = require('http');
 const path = require("path");
-const swaggerUi = require("swagger-ui-express");
 
 const Env = require('./config/env');
-const swaggerDocs = require("./docs/swagger");
 const { initDatabase } = require('./db/postgres_pool');
 
 const app = express();
@@ -13,9 +11,13 @@ app.set('trust proxy', 1);
 
 const routes = require("./routes");
 app.use("/api", routes);
-app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use(express.static(path.join(__dirname, "../../public")));
-app.get("/openapi.json", (req, res) => {res.json(swaggerDocs);});
+app.use((err, _, res, __) => {
+    console.error(err);
+    res.status(err.status || 500).json({
+        error: err.message || "Internal server error."
+    });
+});
 
 const server = http.createServer(app);
 

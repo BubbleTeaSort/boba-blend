@@ -166,7 +166,7 @@ async function login({
     // Check account status
     //
 
-    if (user.status !== "active") {
+    if (user.status !== "active" && user.status !== "pending_verification") {
         const err = new Error("Account is unavailable.");
         err.status = 403;
         throw err;
