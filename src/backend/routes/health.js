@@ -4,7 +4,7 @@ const router = express.Router();
 
 /**
  * @openapi
- * /health:
+ * /api/health:
  *   get:
  *     summary: Service health check
  *     responses:

@@ -1,12 +1,12 @@
 const express = require("express");
 
-const AuthController = require("../controllers/auth_controller");
+const AuthController = require("../../../controllers/auth_controller");
 
 const router = express.Router();
 
 /**
  * @openapi
- * /v1/auth/signup:
+ * /api/v1/auth/signup:
  *   post:
  *     tags:
  *       - Authentication
@@ -62,7 +62,7 @@ router.post("/signup", AuthController.signup);
 
 /**
  * @openapi
- * /v1/auth/login:
+ * /api/v1/auth/login:
  *   post:
  *     tags:
  *       - Authentication

@@ -21,6 +21,8 @@ async function signup({
         throw err;
     }
 
+    handle = handle.toLowerCase();
+
     if (handle.length < 3 || handle.length > 32) {
         const err = new Error("Handle must be between 3 and 32 characters.");
         err.status = 400;
@@ -131,6 +133,8 @@ async function login({
         err.status = 400;
         throw err;
     }
+
+    handle = handle.toLowerCase();
 
     //
     // Lookup user

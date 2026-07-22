@@ -1,6 +1,6 @@
 const crypto = require("crypto");
 
-const Constants = require('./config/constants');
+const Constants = require('../config/constants');
 const { pool } = require("../db/postgres_pool");
 
 async function create({
