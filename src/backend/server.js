@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require("path");
 
+const Env = require('./config/env');
 const { initDatabase } = require('./db/postgresPool');
 
 const app = express();
@@ -8,6 +9,8 @@ app.use(express.json());
 app.set('trust proxy', 1);
 
 app.use(express.static(path.join(__dirname, "../../public")));
+
+const server = http.createServer(app);
 
 (async () => {
     try {
