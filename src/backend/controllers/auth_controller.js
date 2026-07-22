@@ -5,7 +5,7 @@ async function signup(req, res, next) {
         const result = await AuthService.signup({
             handle: req.body.handle,
             password: req.body.password,
-            displayName: req.body.display_name,
+            displayName: req.body.displayName,
             ipAddress: req.ip,
             userAgent: req.get("User-Agent")
         });
