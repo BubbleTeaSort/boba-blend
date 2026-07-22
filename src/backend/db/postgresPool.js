@@ -76,6 +76,25 @@ async function initDatabase() {
     `);
 
     await pool.query(`
+        CREATE TABLE IF NOT EXISTS sessions (
+            id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+
+            user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+
+            token_hash VARCHAR(255) NOT NULL UNIQUE,
+
+            ip_address INET,
+            user_agent TEXT,
+
+            expires_at TIMESTAMP WITH TIME ZONE NOT NULL,
+            last_used_at TIMESTAMP WITH TIME ZONE,
+
+            created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            revoked_at TIMESTAMP WITH TIME ZONE
+        );
+    `);
+
+    await pool.query(`
         CREATE TABLE IF NOT EXISTS oauth_connections (
             user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
 
@@ -107,8 +126,11 @@ async function initDatabase() {
         CREATE INDEX IF NOT EXISTS idx_users_email_token ON users(email_verification_token_hash) WHERE email_verification_token_hash IS NOT NULL;
         CREATE INDEX IF NOT EXISTS idx_users_reset_token ON users(password_reset_token_hash) WHERE password_reset_token_hash IS NOT NULL;
 
-        CREATE INDEX idx_oauth_connections_user_id ON oauth_connections(user_id);
-        CREATE INDEX idx_oauth_connections_expiring ON oauth_connections(expires_at) WHERE expires_at IS NOT NULL;
+        CREATE INDEX IF NOT EXISTS idx_sessions_user_id ON sessions(user_id);
+        CREATE INDEX IF NOT EXISTS idx_sessions_expires_at ON sessions(expires_at);
+
+        CREATE INDEX IF NOT EXISTS idx_oauth_connections_user_id ON oauth_connections(user_id);
+        CREATE INDEX IF NOT EXISTS idx_oauth_connections_expiring ON oauth_connections(expires_at) WHERE expires_at IS NOT NULL;
     `);
 }
 
