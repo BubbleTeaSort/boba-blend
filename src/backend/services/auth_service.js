@@ -175,8 +175,9 @@ async function login({
     //
 
     const validPassword = await verify(
-        user.password_hash,
-        password
+        password,
+        user.password_hash
+        
     );
 
     if (!validPassword) {
