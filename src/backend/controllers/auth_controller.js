@@ -1,4 +1,16 @@
 const AuthService = require("../services/auth_service");
+const Constants = require("../config/constants");
+const Env = require("../config/env");
+
+function setSessionCookie(res, token) {
+    res.cookie("session", token, {
+        httpOnly: true,
+        secure: Env.PRODUCTION === "1",
+        sameSite: "lax",
+        maxAge: Constants.SESSION_DURATION_MS,
+        path: "/"
+    });
+}
 
 async function signup(req, res, next) {
     try {
@@ -9,6 +21,10 @@ async function signup(req, res, next) {
             ipAddress: req.ip,
             userAgent: req.get("User-Agent")
         });
+
+        setSessionCookie(res, result.token);
+
+        delete result.token;
 
         res.status(201).json(result);
     }
@@ -25,6 +41,10 @@ async function login(req, res, next) {
             ipAddress: req.ip,
             userAgent: req.get("User-Agent")
         });
+
+        setSessionCookie(res, result.token);
+
+        delete result.token;
 
         res.status(200).json(result);
     }
