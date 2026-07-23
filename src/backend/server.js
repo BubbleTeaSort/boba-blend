@@ -16,7 +16,7 @@ app.set('trust proxy', 1);
 const routes = require("./routes");
 app.use("/api", routes);
 app.use(express.static(path.join(__dirname, '../../dist')));
-app.get('*', (_, res) => { res.sendFile(path.join(__dirname, '../../dist/index.html')); });
+app.get('/*splat', (_, res) => { res.sendFile(path.join(__dirname, '../../dist/index.html')); });
 app.use((err, _, res, __) => {
     console.error(err);
     res.status(err.status || 500).json({
