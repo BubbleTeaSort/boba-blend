@@ -5,6 +5,8 @@ const Env = require("../config/env");
 const AUTHORIZE_URL = "https://accounts.spotify.com/authorize";
 const TOKEN_URL = "https://accounts.spotify.com/api/token";
 const PROFILE_URL = "https://api.spotify.com/v1/me";
+const TOP_ARTISTS_URL = "https://api.spotify.com/v1/me/top/artists";
+const TOP_TRACKS_URL = "https://api.spotify.com/v1/me/top/tracks";
 
 const SCOPES = [
     "user-read-email",
@@ -62,9 +64,50 @@ async function getProfile(accessToken) {
     return response.data;
 }
 
+async function refreshAccessToken(refreshToken) {
+    const response = await axios.post(
+        TOKEN_URL,
+        new URLSearchParams({
+            grant_type: "refresh_token",
+            refresh_token: refreshToken
+        }).toString(),
+        {
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                Authorization: "Basic " + Buffer.from(
+                    `${Env.SPOTIFY_CLIENT_ID}:${Env.SPOTIFY_CLIENT_SECRET}`
+                ).toString("base64")
+            }
+        }
+    );
+
+    return response.data;
+}
+
+async function getTopArtists(accessToken, { limit = 10, timeRange = "medium_term" } = {}) {
+    const response = await axios.get(TOP_ARTISTS_URL, {
+        headers: { Authorization: "Bearer " + accessToken },
+        params: { limit, time_range: timeRange }
+    });
+
+    return response.data;
+}
+
+async function getTopTracks(accessToken, { limit = 10, timeRange = "medium_term" } = {}) {
+    const response = await axios.get(TOP_TRACKS_URL, {
+        headers: { Authorization: "Bearer " + accessToken },
+        params: { limit, time_range: timeRange }
+    });
+
+    return response.data;
+}
+
 module.exports = {
     isConfigured,
     buildAuthorizeUrl,
     exchangeCodeForToken,
-    getProfile
+    getProfile,
+    refreshAccessToken,
+    getTopArtists,
+    getTopTracks
 };

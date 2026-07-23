@@ -1,4 +1,5 @@
 const path = require("path");
+require('dotenv').config({ path: path.join(__dirname, '.env') });
 
 const cookieParser = require("cookie-parser");
 const cors = require('cors');
@@ -27,6 +28,9 @@ app.set('trust proxy', 1);
 
 const routes = require("./routes");
 app.use("/api", routes);
+app.use("/api", (req, res) => {
+    res.status(404).json({ error: `Not found: ${req.method} ${req.originalUrl}` });
+});
 app.use(express.static(path.join(__dirname, '../../dist')));
 app.get('/*splat', (_, res) => { res.sendFile(path.join(__dirname, '../../dist/index.html')); });
 app.use((err, _, res, __) => {

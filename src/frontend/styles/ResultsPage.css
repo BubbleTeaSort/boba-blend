@@ -9,6 +9,25 @@
     gap: 16px;
 }
 
+.results-avatar {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--border-glow);
+    box-shadow: var(--shadow-glow);
+}
+
+.results-avatar-fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--purple), var(--pink));
+    color: white;
+    font-size: 36px;
+    font-weight: 800;
+}
+
 .results h1 {
     font-size: 36px;
 }

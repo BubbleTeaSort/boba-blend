@@ -38,16 +38,8 @@ export default function LandingPage() {
                     <div className="landing-cta">
                         <Link to="/login" className="btn-spotify">
                             <FaSpotify className="spotify-logo" />
-                            Log in with Spotify
+                            Continue with Spotify
                         </Link>
-                        <span
-                            style={{ fontSize: 13, color: "var(--text-muted)" }}
-                        >
-                            No account?{" "}
-                            <Link to="/signup" style={{ fontWeight: 600 }}>
-                                Sign up here
-                            </Link>
-                        </span>
                     </div>
 
                     <div className="landing-features">

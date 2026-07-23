@@ -97,27 +97,7 @@ async function upsertSpotifyConnection({
     );
 }
 
-async function findUserIdBySessionToken(token) {
-    if (!token) return null;
-
-    const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
-
-    const result = await pool.query(
-        `
-        SELECT user_id
-        FROM sessions
-        WHERE token_hash = $1
-          AND revoked_at IS NULL
-          AND expires_at > CURRENT_TIMESTAMP
-        `,
-        [tokenHash]
-    );
-
-    return result.rows[0]?.user_id ?? null;
-}
-
 module.exports = {
     createUserFromSpotify,
-    upsertSpotifyConnection,
-    findUserIdBySessionToken
+    upsertSpotifyConnection
 };

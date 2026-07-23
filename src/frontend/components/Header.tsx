@@ -1,7 +1,13 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { getProfile } from "../lib/api";
 import "./Header.css";
 
 export default function Header() {
+    // useLocation subscribes to route changes, so this re-reads on every
+    // navigation (e.g. right after the Spotify callback stores a profile).
+    useLocation();
+    const profile = getProfile();
+
     return (
         <header className="header">
             <Link to="/" className="header-logo">
@@ -88,9 +94,26 @@ export default function Header() {
 
             <nav className="header-nav">
                 <Link to="/">Home</Link>
-                <Link to="/login" className="btn-login">
-                    Log In
-                </Link>
+                {profile ? (
+                    <Link to="/profile" className="header-profile">
+                        {profile.avatarUrl ? (
+                            <img
+                                className="header-avatar"
+                                src={profile.avatarUrl}
+                                alt={profile.displayName}
+                            />
+                        ) : (
+                            <span className="header-avatar header-avatar-fallback">
+                                {profile.displayName.charAt(0).toUpperCase()}
+                            </span>
+                        )}
+                        {profile.displayName}
+                    </Link>
+                ) : (
+                    <Link to="/login" className="btn-login">
+                        Connect Spotify
+                    </Link>
+                )}
             </nav>
         </header>
     );
