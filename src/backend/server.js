@@ -1,11 +1,15 @@
+const path = require("path");
+require('dotenv').config({ path: path.join(__dirname, '.env') });
+
 const express = require('express');
 const http = require('http');
-const path = require("path");
+const cors = require('cors');
 
 const Env = require('./config/env');
 const { initDatabase } = require('./db/postgres_pool');
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 app.set('trust proxy', 1);
 

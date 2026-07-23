@@ -5,6 +5,7 @@ import LandingPage from "./frontend/pages/LandingPage";
 import LoginPage from "./frontend/pages/LoginPage";
 import SignUpPage from "./frontend/pages/SignUpPage";
 import ResultsPage from "./frontend/pages/ResultsPage";
+import SpotifyCallbackPage from "./frontend/pages/SpotifyCallbackPage";
 
 function App() {
     return (
@@ -15,6 +16,7 @@ function App() {
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/signup" element={<SignUpPage />} />
                 <Route path="/results" element={<ResultsPage />} />
+                <Route path="/spotify/callback" element={<SpotifyCallbackPage />} />
             </Routes>
             <Footer />
         </BrowserRouter>
