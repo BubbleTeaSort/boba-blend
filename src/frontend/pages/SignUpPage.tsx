@@ -2,13 +2,13 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaSpotify } from "react-icons/fa";
 import BobaDecorations from "../components/BobaDecorations";
+import { ApiError, signUp, setToken, getSpotifyConnectUrl } from "../lib/api";
 import "../styles/AuthPage.css";
 
 export default function SignUpPage() {
     const navigate = useNavigate();
     const [form, setForm] = useState({
-        username: "",
-        email: "",
+        handle: "",
         password: "",
         confirmPassword: "",
     });
@@ -30,11 +30,23 @@ export default function SignUpPage() {
             setLoading(false);
             return;
         }
+
+        try {
+            const { token } = await signUp({
+                handle: form.handle,
+                password: form.password,
+            });
+            setToken(token);
+            navigate("/results");
+        } catch (err) {
+            setError(err instanceof ApiError ? err.message : "Sign up failed");
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleSpotifyConnect = () => {
-        // TODO: Redirect to Spotify OAuth
-        console.log("Spotify connect clicked");
+        window.location.href = getSpotifyConnectUrl();
     };
 
     return (
@@ -51,28 +63,17 @@ export default function SignUpPage() {
 
                     <form onSubmit={handleSubmit}>
                         <div className="form-group">
-                            <label htmlFor="username">Username</label>
+                            <label htmlFor="handle">Username</label>
                             <input
-                                id="username"
+                                id="handle"
                                 type="text"
                                 placeholder="bobalover42"
                                 autoComplete="username"
-                                value={form.username}
+                                value={form.handle}
                                 onChange={handleChange}
                                 required
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="email">Email</label>
-                            <input
-                                id="email"
-                                type="email"
-                                placeholder="you@example.com"
-                                autoComplete="email"
-                                value={form.email}
-                                onChange={handleChange}
-                                required
+                                minLength={3}
+                                maxLength={32}
                             />
                         </div>
 
@@ -127,7 +128,8 @@ export default function SignUpPage() {
                     </button>
 
                     <div className="auth-footer">
-                        Already have an account? <Link to="/login">Log in</Link>
+                        Already have an account?{" "}
+                        <Link to="/login">Log in</Link>
                     </div>
                 </div>
             </section>

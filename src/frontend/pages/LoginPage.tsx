@@ -1,17 +1,25 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { FaSpotify } from "react-icons/fa";
 import BobaDecorations from "../components/BobaDecorations";
+import { ApiError, logIn, setToken, getSpotifyConnectUrl } from "../lib/api";
 import "../styles/AuthPage.css";
 
 export default function LoginPage() {
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
     const [form, setForm] = useState({
-        email: "",
+        handle: "",
         password: "",
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+
+    useEffect(() => {
+        if (searchParams.get("error") === "spotify_auth_failed") {
+            setError("Spotify login failed. Please try again.");
+        }
+    }, [searchParams]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setForm((prev) => ({ ...prev, [e.target.id]: e.target.value }));
@@ -22,11 +30,20 @@ export default function LoginPage() {
         e.preventDefault();
         setLoading(true);
         setError("");
+
+        try {
+            const { token } = await logIn(form);
+            setToken(token);
+            navigate("/results");
+        } catch (err) {
+            setError(err instanceof ApiError ? err.message : "Log in failed");
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleSpotifyConnect = () => {
-        // TODO: Redirect to Spotify OAuth
-        console.log("Spotify connect clicked");
+        window.location.href = getSpotifyConnectUrl();
     };
 
     return (
@@ -43,13 +60,13 @@ export default function LoginPage() {
 
                     <form onSubmit={handleSubmit}>
                         <div className="form-group">
-                            <label htmlFor="email">Email</label>
+                            <label htmlFor="handle">Username</label>
                             <input
-                                id="email"
-                                type="email"
-                                placeholder="you@example.com"
-                                autoComplete="email"
-                                value={form.email}
+                                id="handle"
+                                type="text"
+                                placeholder="bobalover42"
+                                autoComplete="username"
+                                value={form.handle}
                                 onChange={handleChange}
                                 required
                             />
