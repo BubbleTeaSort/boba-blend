@@ -83,9 +83,52 @@ async function touch(tokenHash) {
     );
 }
 
+async function validate(token) {
+    if (!token) {
+        return null;
+    }
+
+    const tokenHash = crypto
+        .createHash("sha256")
+        .update(token)
+        .digest("hex");
+
+    const result = await pool.query(
+        `
+        SELECT
+            s.user_id,
+            s.expires_at,
+            u.handle,
+            u.display_name,
+            u.status
+        FROM sessions s
+        JOIN users u
+            ON u.id = s.user_id
+        WHERE s.token_hash = $1
+          AND s.revoked_at IS NULL
+          AND s.expires_at > CURRENT_TIMESTAMP
+        `,
+        [tokenHash]
+    );
+
+    if (result.rowCount === 0) {
+        return null;
+    }
+
+    await touch(tokenHash);
+
+    return {
+        userId: result.rows[0].user_id,
+        handle: result.rows[0].handle,
+        displayName: result.rows[0].display_name,
+        status: result.rows[0].status
+    };
+}
+
 module.exports = {
     create,
     revoke,
     revokeAllForUser,
-    touch
+    touch,
+    validate
 };

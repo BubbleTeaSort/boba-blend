@@ -10,5 +10,8 @@ export default defineConfig({
     proxy: {
       '/api': 'http://localhost:10000',
     },
+    watch: {
+        ignored: ['**/.vs/**']
+    },
   },
 })
