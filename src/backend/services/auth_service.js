@@ -1,5 +1,3 @@
-const crypto = require("crypto");
-
 const SessionService = require("./session_service");
 const { pool } = require("../db/postgres_pool");
 const { hash, verify } = require("../utils/crypto");
