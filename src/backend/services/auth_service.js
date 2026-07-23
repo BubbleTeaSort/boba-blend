@@ -1,6 +1,7 @@
 const SessionService = require("./session_service");
-const { pool } = require("../db/postgres_pool");
 const { hash, verify } = require("../utils/crypto");
+const { pool } = require("../db/postgres_pool");
+const { validatePassword } = require("../utils/password_validator");
 
 async function signup({
     handle,
@@ -15,6 +16,14 @@ async function signup({
 
     if (!handle || !password) {
         const err = new Error("Handle and password are required.");
+        err.status = 400;
+        throw err;
+    }
+
+    const passwordError = validatePassword(password);
+
+    if (passwordError) {
+        const err = new Error(passwordError);
         err.status = 400;
         throw err;
     }
