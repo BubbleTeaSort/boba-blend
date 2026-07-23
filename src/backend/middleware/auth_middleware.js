@@ -1,13 +1,15 @@
 const SessionService = require("../services/session_service");
 
 module.exports = async function authenticate(req, res, next) {
-    const auth = req.get("Authorization");
+    const token =
+        req.cookies?.session ||
+        (req.get("Authorization")?.startsWith("Bearer ")
+            ? req.get("Authorization").substring(7)
+            : null);
 
-    if (!auth?.startsWith("Bearer ")) {
+    if (!token) {
         return res.sendStatus(401);
     }
-
-    const token = auth.substring(7);
 
     const session = await SessionService.validate(token);
 

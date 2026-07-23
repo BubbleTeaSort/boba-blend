@@ -1,15 +1,28 @@
 const path = require("path");
 require('dotenv').config({ path: path.join(__dirname, '.env') });
 
-const express = require('express');
-const http = require('http');
+const cookieParser = require("cookie-parser");
 const cors = require('cors');
+const express = require('express');
+const helmet = require("helmet");
+const http = require('http');
+const rateLimit = require("express-rate-limit");
 
 const Env = require('./config/env');
 const { initDatabase } = require('./db/postgres_pool');
 
+if (Env.PRODUCTION === "0") { require("dotenv").config({ path: path.join(__dirname, ".env") }); }
+
 const app = express();
-app.use(cors());
+app.use(cookieParser());
+app.use(helmet());
+app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 200 }));
+app.use(cors({
+    origin: Env.PRODUCTION !== "1"
+        ? ["http://localhost:5173", Env.FRONTEND_URL]
+        : [Env.FRONTEND_URL],
+    credentials: true
+}));
 app.use(express.json());
 app.set('trust proxy', 1);
 
