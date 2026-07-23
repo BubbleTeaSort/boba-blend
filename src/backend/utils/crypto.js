@@ -8,7 +8,7 @@ async function hash(key) {
     }
 }
 
-async function verify(plainKey, hashedKey) {
+async function verify(hashedKey, plainKey) {
     try {
         return await argon2.verify(hashedKey, plainKey);
     } catch (err) {

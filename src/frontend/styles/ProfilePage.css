@@ -1,0 +1,245 @@
+.profile {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 48px 24px;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
+    gap: 40px;
+}
+
+.profile-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 4px;
+}
+
+.profile-avatar {
+    width: 112px;
+    height: 112px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--border-glow);
+    box-shadow: var(--shadow-glow);
+    margin-bottom: 16px;
+}
+
+.profile-avatar-fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--purple), var(--pink));
+    color: white;
+    font-size: 42px;
+    font-weight: 800;
+}
+
+.profile-subtitle {
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.profile-stats {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    width: 100%;
+}
+
+.stat-tile {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    min-width: 150px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 6px;
+}
+
+.stat-tile-icon {
+    font-size: 24px;
+}
+
+.stat-tile-value {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.stat-tile-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+.profile-section {
+    width: 100%;
+}
+
+.profile-section h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+}
+
+.artist-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 16px;
+}
+
+.artist-card {
+    position: relative;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 4px;
+    transition: all 0.25s ease;
+}
+
+.artist-card:hover {
+    border-color: var(--border-glow);
+    box-shadow: var(--shadow-glow);
+    transform: translateY(-4px);
+}
+
+.artist-rank {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--purple), var(--pink));
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.artist-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.artist-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.profile-status {
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.profile-status-error {
+    color: #fca5a5;
+}
+
+.track-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.track-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    transition: background 0.2s ease;
+}
+
+.track-row:hover {
+    background: var(--bg-card);
+}
+
+.track-rank {
+    width: 20px;
+    flex-shrink: 0;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-muted);
+}
+
+.track-thumb {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    object-fit: cover;
+    background: var(--bg-secondary);
+}
+
+.track-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    gap: 2px;
+}
+
+.track-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.track-artists {
+    font-size: 12px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media (max-width: 768px) {
+    .profile {
+        padding: 32px 20px;
+        gap: 32px;
+    }
+
+    .profile-avatar {
+        width: 88px;
+        height: 88px;
+    }
+
+    .stat-tile {
+        min-width: 120px;
+        padding: 16px;
+    }
+}

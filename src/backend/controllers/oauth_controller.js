@@ -47,8 +47,8 @@ async function spotifyCallback(req, res) {
         const tokenResponse = await SpotifyService.exchangeCodeForToken(code);
         const profile = await SpotifyService.getProfile(tokenResponse.access_token);
 
-        const existingUserId = await OAuthService.findUserIdBySessionToken(existingToken);
-        const userId = existingUserId
+        const existingSession = await SessionService.validate(existingToken);
+        const userId = existingSession?.userId
             ?? (await OAuthService.createUserFromSpotify(profile)).id;
 
         const expiresAt = new Date(Date.now() + tokenResponse.expires_in * 1000);
@@ -68,7 +68,13 @@ async function spotifyCallback(req, res) {
             userAgent: req.get("User-Agent")
         });
 
-        res.redirect(`${Env.FRONTEND_URL}/spotify/callback?token=${sessionToken}`);
+        const redirectParams = new URLSearchParams({
+            token: sessionToken,
+            name: profile.display_name || "",
+            avatar: profile.images?.[0]?.url || ""
+        });
+
+        res.redirect(`${Env.FRONTEND_URL}/spotify/callback?${redirectParams.toString()}`);
     } catch (err) {
         console.error("Spotify OAuth callback failed:", err);
         res.redirect(`${Env.FRONTEND_URL}/login?error=spotify_auth_failed`);
